@@ -1,0 +1,25 @@
+name: CI - Terraform Plan
+
+on:
+  push:
+    branches:
+      - "main"  # Trigger on push to the main branch (adjust as needed)
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Run Terraform Plan
+        run: terraform plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

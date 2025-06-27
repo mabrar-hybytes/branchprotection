@@ -1,0 +1,29 @@
+name: CD - Terraform Apply
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - "main"  # Trigger on pull request merge to the main branch
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true  # Run only if PR is merged
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Apply Terraform Plan
+        run: terraform apply -auto-approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}
+          TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}
