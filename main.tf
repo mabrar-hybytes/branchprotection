@@ -16,7 +16,7 @@ terraform {
 }
 
 provider "github" {
-  token = chomp(file("github_token.txt"))  # Reads token from the current directory
+  token = var.github_token  # Fetch the token from the environment variable
   owner = "mabrar-hybytes"  # GitHub organization or username
 }
 
