@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - "main"  # Trigger on PR merge to main branch
+      - "main"  # Trigger on PR merge to the main branch
 
 jobs:
   apply:
@@ -29,7 +29,7 @@ jobs:
         run: terraform init
 
       - name: Apply Terraform Plan
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="token_github=${{ secrets.TOKEN_GITHUB }}"  # Pass GitHub token from GitHub secrets
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Pass GitHub token from GitHub secrets
           TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}  # Pass the S3 bucket secret
