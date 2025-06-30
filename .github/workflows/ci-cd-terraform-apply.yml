@@ -4,12 +4,12 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - "main"  # Trigger on PR merge to main branch
+      - "main"
 
 jobs:
   apply:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true  # Run only if PR is merged
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code
@@ -23,14 +23,16 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "eu-west-2"  # Specify your AWS region here
+          aws-region: "eu-west-2"
 
       - name: Initialize Terraform
         run: terraform init
+        env:
+          TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Apply Terraform Plan
         run: terraform apply -auto-approve
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Use the token from GitHub secrets
-          TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}  # Pass the S3 bucket secret
-          TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}  # Pass the DynamoDB table secret
+          TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
+          TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}
+          TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}
