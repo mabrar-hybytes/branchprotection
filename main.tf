@@ -1,9 +1,16 @@
 terraform {
+  required_providers {
+    github = {
+      source = "integrations/github"
+      version = "~> 5.0"  # Adjust to the desired version
+    }
+  }
+
   backend "s3" {
     bucket         = "cicdplan"               # Your S3 bucket name
     key            = "terraform/state.tfstate"  # Path inside the S3 bucket for the state file
     region         = "eu-west-2"              # Your AWS region (adjust as needed)
-    dynamodb_table = "cicddb"                 # DynamoDB table for state locking
+    use_lockfile   = true                     # Enable DynamoDB state locking (replaces dynamodb_table)
     encrypt        = true                     # Enable encryption for the state file
   }
 }
