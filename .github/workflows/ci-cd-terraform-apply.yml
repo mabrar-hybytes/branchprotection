@@ -1,39 +1,28 @@
-name: CD - Terraform Apply
+name: Terraform Apply
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - "main"
+      - main
 
 jobs:
-  apply:
+  terraform:
     name: Terraform Apply
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "eu-west-2"
-
-      - name: Initialize Terraform
+      - name: Terraform Init
         run: terraform init
-        env:
-          TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
 
-      - name: Apply Terraform Plan
-        run: terraform apply -auto-approve
+      - name: Terraform Apply
         env:
           TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
-          TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}
-          TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}
+          TF_VAR_owner: mabrar-hybytes
+          TF_VAR_repository: branchprotection
+        run: terraform apply -auto-approve
