@@ -3,14 +3,10 @@ name: CI - Terraform Plan
 on:
   push:
     branches:
-      - "main"
-  pull_request:
-    branches:
       - "master"
 
 jobs:
   plan:
-    name: Terraform Plan
     runs-on: ubuntu-latest
 
     steps:
