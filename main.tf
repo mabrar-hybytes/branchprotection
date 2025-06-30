@@ -1,8 +1,3 @@
-variable "token_github" {
-  description = "GitHub token for authentication"
-  type        = string
-}
-
 terraform {
   required_providers {
     github = {
@@ -21,7 +16,7 @@ terraform {
 }
 
 provider "github" {
-  token = var.token_github  # Fetch the token from the environment variable
+  token = var.github_token  # Fetch the token from the environment variable, passed by GitHub Actions
   owner = "mabrar-hybytes"  # GitHub organization or username
 }
 
