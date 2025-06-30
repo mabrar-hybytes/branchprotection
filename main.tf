@@ -46,3 +46,4 @@ resource "github_branch_protection" "master_protection" {
 
   require_signed_commits = true
 }
+
