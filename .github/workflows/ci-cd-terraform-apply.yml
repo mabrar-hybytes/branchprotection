@@ -31,6 +31,6 @@ jobs:
       - name: Apply Terraform Plan
         run: terraform apply -auto-approve
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Use the token from GitHub secrets
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Pass GitHub token from GitHub secrets
           TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}  # Pass the S3 bucket secret
           TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}  # Pass the DynamoDB table secret

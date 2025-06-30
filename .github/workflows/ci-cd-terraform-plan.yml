@@ -29,4 +29,4 @@ jobs:
       - name: Run Terraform Plan
         run: terraform plan
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Use the token from GitHub secrets
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Pass GitHub token from GitHub secrets
