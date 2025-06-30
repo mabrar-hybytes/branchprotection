@@ -16,7 +16,7 @@ terraform {
 }
 
 provider "github" {
-  token = env.TOKEN_GITHUB  # Fetch the token from the environment variable passed in GitHub Actions
+  token = env.TOKEN_GITHUB  # Use the environment variable passed from GitHub Actions
   owner = "mabrar-hybytes"  # GitHub organization or username
 }
 
