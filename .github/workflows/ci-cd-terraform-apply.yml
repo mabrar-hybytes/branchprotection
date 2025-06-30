@@ -33,7 +33,7 @@ jobs:
 
       - name: Apply Terraform Plan
         run: terraform apply -auto-approve
-        env:
+        env: prod
           TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
           TF_BACKEND_S3_BUCKET: ${{ secrets.TF_BACKEND_S3_BUCKET }}
           TF_BACKEND_DYNAMODB_TABLE: ${{ secrets.TF_BACKEND_DYNAMODB_TABLE }}
