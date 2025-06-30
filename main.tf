@@ -1,3 +1,9 @@
+variable "token_github" {
+  description = "GitHub personal access token"
+  type        = string
+  sensitive   = true  # This ensures the token is not exposed in logs
+}
+
 terraform {
   required_providers {
     github = {
@@ -16,7 +22,7 @@ terraform {
 }
 
 provider "github" {
-  token = env.TOKEN_GITHUB  # Use the environment variable passed from GitHub Actions
+  token = var.token_github  # Fetch the token from the environment variable passed by GitHub Actions
   owner = "mabrar-hybytes"  # GitHub organization or username
 }
 

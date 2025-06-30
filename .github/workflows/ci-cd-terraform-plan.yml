@@ -3,7 +3,7 @@ name: CI - Terraform Plan
 on:
   push:
     branches:
-      - "main"  # Trigger on push to main branch
+      - "main"  # Trigger on push to the main branch
 
 jobs:
   plan:
@@ -27,6 +27,6 @@ jobs:
         run: terraform init
 
       - name: Run Terraform Plan
-        run: terraform plan
+        run: terraform plan -var="token_github=${{ secrets.TOKEN_GITHUB }}"  # Pass GitHub token from GitHub secrets
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Pass GitHub token from GitHub secrets
