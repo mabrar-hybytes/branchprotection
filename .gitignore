@@ -1,0 +1,16 @@
+# Ignore GitHub token file
+github_token.txt
+
+# Ignore Terraform state files and cache
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Ignore Terraform lock file (optional)
+.terraform.lock.hcl
+
+# Ignore VSCode settings (if you're using it)
+.vscode/
+
+# Ignore log files
+*.log
