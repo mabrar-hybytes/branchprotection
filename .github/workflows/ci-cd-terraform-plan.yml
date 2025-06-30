@@ -3,7 +3,7 @@ name: CI - Terraform Plan
 on:
   push:
     branches:
-      - "main"  # Trigger on push to the main branch
+      - "main"  # Trigger on push to main branch
 
 jobs:
   plan:
