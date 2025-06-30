@@ -1,54 +1,48 @@
 variable "token_github" {
   description = "GitHub personal access token"
   type        = string
-  sensitive   = true  # This ensures the token is not exposed in logs
+  sensitive   = true
 }
 
 terraform {
   required_providers {
     github = {
-      source = "integrations/github"
-      version = "~> 5.0"  # Adjust to the desired version
+      source  = "integrations/github"
+      version = "~> 5.0"
     }
   }
 
   backend "s3" {
-    bucket         = "cicdplan"               # Your S3 bucket name
-    key            = "terraform/state.tfstate"  # Path inside the S3 bucket for the state file
-    region         = "eu-west-2"              # Your AWS region (adjust as needed)
-    use_lockfile   = true                     # Enable DynamoDB state locking (replaces dynamodb_table)
-    encrypt        = true                     # Enable encryption for the state file
+    bucket         = "cicdplan"                     # Replace with your actual S3 bucket
+    key            = "terraform/state.tfstate"
+    region         = "eu-west-2"
+    encrypt        = true
+    use_lockfile   = true
   }
 }
 
 provider "github" {
-  token = var.token_github  # Fetch the token from the input variable passed by GitHub Actions
-  owner = "mabrar-hybytes"  # GitHub organization or username
+  token = var.token_github
+  owner = "mabrar-hybytes"                         # Replace with your GitHub username/org
 }
 
-# Fetch repository_id dynamically from the repository name
 data "github_repository" "branchprotection_repo" {
-  full_name = "mabrar-hybytes/branchprotection"  # Your repository's full name (owner/repo)
+  full_name = "mabrar-hybytes/branchprotection"
 }
 
-# Branch protection rule for the 'master' branch
 resource "github_branch_protection" "master_protection" {
-  repository_id = data.github_repository.branchprotection_repo.id  # Use the repository ID dynamically fetched
+  repository_id = data.github_repository.branchprotection_repo.id
+  pattern       = "master"
 
-  pattern = "master"  # The branch to protect (use pattern instead of branch)
-
-  # Enforcing Pull Request Reviews
   required_pull_request_reviews {
     dismiss_stale_reviews           = true
-    required_approving_review_count = 1  # Number of approvals required before merging
+    required_approving_review_count = 1
   }
 
-  # Require Status Checks (for CI/CD)
   required_status_checks {
-    strict   = true                  # Merging only allowed if all checks pass
-    contexts = ["github-actions"]    # Replace with your actual GitHub Actions job name
+    strict   = true
+    contexts = ["github-actions"]
   }
 
-  # Require Signed Commits
   require_signed_commits = true
 }

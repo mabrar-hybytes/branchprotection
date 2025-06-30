@@ -3,7 +3,7 @@ name: CI - Terraform Plan
 on:
   push:
     branches:
-      - "main"  # Trigger on push to main branch
+      - "main"
 
 jobs:
   plan:
@@ -21,12 +21,14 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "eu-west-2"  # Specify your AWS region here
+          aws-region: "eu-west-2"
 
       - name: Initialize Terraform
         run: terraform init
+        env:
+          TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Run Terraform Plan
-        run: terraform plan -var="token_github=${{ secrets.TOKEN_GITHUB }}"  # Pass GitHub token from GitHub secrets
+        run: terraform plan
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Pass GitHub token from GitHub secrets
+          TF_VAR_token_github: ${{ secrets.TOKEN_GITHUB }}
